@@ -9,8 +9,8 @@ from decorator import decorator
 def runs_once_per_instance(func, *args, **kwargs):
     '''
     Decorator to prevent wrapped method from running more than once per
-    taskset instance (run_once prevents the method from running more
-    than once per overall python interpreter invocation, which probably
+    taskset instance (fabric's @runs_once prevents the method from running
+    more than once per overall python interpreter invocation, which probably
     isn't what you want if you have multiple instances of the taskset).
     '''
     obj = args[0]
