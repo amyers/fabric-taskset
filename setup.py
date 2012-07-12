@@ -20,7 +20,10 @@ setup(
     description = """ Expose class members as Fabric tasks """,
 
     long_description = open('README.rst').read(),
-    requires = ['Fabric (>= 1.1)'],
+    requires = [
+        'Fabric (>= 1.1)',
+        'decorator (>= 3.3.3)',  # older versions untested; probably OK though
+    ],
 
     classifiers=(
         'Development Status :: 3 - Alpha',

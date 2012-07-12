@@ -3,6 +3,29 @@ from __future__ import absolute_import
 import inspect
 import sys
 from fabric.tasks import WrappedCallableTask
+from decorator import decorator
+
+@decorator
+def runs_once_per_instance(func, *args, **kwargs):
+    '''
+    Decorator to prevent wrapped method from running more than once per
+    taskset instance (run_once prevents the method from running more
+    than once per overall python interpreter invocation, which probably
+    isn't what you want if you have multiple instances of the taskset).
+    '''
+    obj = args[0]
+    # get result cache, or initialize if doesn't exist
+    try:
+        cache = obj.__once_per_taskset
+    except AttributeError:
+        cache = obj.__once_per_taskset = {}
+    # get previous result from cache, or call func() and cache result
+    try:
+        result = cache[func.func_name]
+    except KeyError:
+        result = cache[func.func_name] = func(*args, **kwargs)
+    return result
+
 
 def task(*args, **kwargs):
     """
